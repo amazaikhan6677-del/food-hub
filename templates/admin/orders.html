@@ -1,0 +1,36 @@
+{% extends "admin/base_admin.html" %}
+{% set active = "orders" %}
+{% block page_title %}Orders{% endblock %}
+{% block admin_content %}
+
+<div class="admin-panel">
+  <div class="d-flex justify-content-between flex-wrap gap-2 mb-3">
+    <h6 class="mb-0">All Orders</h6>
+    <select id="orderStatusFilter" class="form-select form-select-sm" style="width:auto">
+      <option value="all">All Statuses</option>
+      <option>Order Received</option>
+      <option>Order Confirmed</option>
+      <option>Preparing</option>
+      <option>Ready</option>
+      <option>Out for Delivery</option>
+      <option>Delivered</option>
+      <option>Cancelled</option>
+    </select>
+  </div>
+  <div class="table-responsive">
+    <table class="table admin-table align-middle">
+      <thead>
+        <tr>
+          <th>Order ID</th><th>Customer</th><th>Items</th><th>Total</th>
+          <th>Payment</th><th>Status</th><th>Date</th><th>Update Status</th>
+        </tr>
+      </thead>
+      <tbody id="ordersTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
+{% block extra_js %}
+<script>window.FH_ADMIN_PAGE = "orders";</script>
+{% endblock %}

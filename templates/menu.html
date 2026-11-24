@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Menu - FoodHub{% endblock %}
+{% block content %}
+<section class="container py-5">
+  <h1 class="fh-section-title mb-4">Our Menu</h1>
+
+  <div class="fh-menu-toolbar row g-3 mb-4">
+    <div class="col-md-5">
+      <div class="input-group">
+        <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass"></i></span>
+        <input type="text" id="menuSearch" class="form-control border-start-0" placeholder="Search for food...">
+      </div>
+    </div>
+    <div class="col-md-4">
+      <input type="range" class="form-range" id="priceFilter" min="0" max="1500" step="50" value="1500">
+      <small class="text-muted">Max price: Rs. <span id="priceFilterVal">1500</span></small>
+    </div>
+    <div class="col-md-3">
+      <select id="sortFilter" class="form-select">
+        <option value="default">Sort: Default</option>
+        <option value="price_asc">Price: Low to High</option>
+        <option value="price_desc">Price: High to Low</option>
+        <option value="rating">Top Rated</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="fh-category-tabs mb-4" id="categoryTabs">
+    <button class="fh-cat-tab active" data-category="all">All</button>
+    {% for c in categories %}
+    <button class="fh-cat-tab" data-category="{{ c.name }}">{{ c.name }}</button>
+    {% endfor %}
+  </div>
+
+  <div id="menuGrid" class="row g-4">
+    <!-- populated by main.js via /api/menu -->
+  </div>
+  <div id="menuEmpty" class="text-center text-muted py-5 d-none">
+    <i class="fa-solid fa-circle-exclamation fa-2x mb-3"></i>
+    <p>No items match your search/filters.</p>
+  </div>
+</section>
+
+<!-- Food item template (cloned by JS) -->
+<template id="foodCardTemplate">
+  <div class="col-6 col-md-4 col-lg-3 food-card-col">
+    <div class="fh-food-card h-100">
+      <div class="fh-food-img"><img class="fc-img" src="" alt="" loading="lazy"></div>
+      <div class="fh-food-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <h6 class="fc-name mb-1"></h6>
+          <span class="fh-rating small"><i class="fa-solid fa-star"></i> <span class="fc-rating"></span></span>
+        </div>
+        <p class="fh-food-desc fc-desc"></p>
+        <span class="badge fh-cat-badge fc-category"></span>
+        <span class="badge bg-danger fc-unavailable d-none">Out of stock</span>
+        <div class="d-flex justify-content-between align-items-center mt-2">
+          <span class="fh-price fc-price"></span>
+        </div>
+        <div class="d-flex gap-2 mt-2">
+          <button class="btn fh-btn-outline btn-sm flex-fill fc-add"><i class="fa-solid fa-cart-plus"></i> Add</button>
+          <button class="btn fh-btn-primary btn-sm flex-fill fc-buy">Buy Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+{% endblock %}
+{% block extra_js %}
+<script>window.FH_PAGE = "menu";</script>
+{% endblock %}

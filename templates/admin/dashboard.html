@@ -1,0 +1,60 @@
+{% extends "admin/base_admin.html" %}
+{% set active = "dashboard" %}
+{% block page_title %}Dashboard{% endblock %}
+{% block admin_content %}
+
+<div class="row g-3 mb-4" id="statCards">
+  <div class="col-md-3 col-6">
+    <div class="admin-stat-card"><i class="fa-solid fa-receipt"></i><div><h4 id="statTotalOrders">0</h4><span>Total Orders</span></div></div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="admin-stat-card"><i class="fa-solid fa-calendar-day"></i><div><h4 id="statTodayOrders">0</h4><span>Today's Orders</span></div></div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="admin-stat-card"><i class="fa-solid fa-money-bill-trend-up"></i><div><h4 id="statRevenue">Rs. 0</h4><span>Total Revenue</span></div></div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="admin-stat-card"><i class="fa-solid fa-users"></i><div><h4 id="statCustomers">0</h4><span>Customers</span></div></div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="admin-stat-card"><i class="fa-solid fa-hourglass-half"></i><div><h4 id="statPending">0</h4><span>Pending Orders</span></div></div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="admin-stat-card"><i class="fa-solid fa-circle-check"></i><div><h4 id="statCompleted">0</h4><span>Completed Orders</span></div></div>
+  </div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-8">
+    <div class="admin-panel">
+      <h6>Daily Sales (Last 7 Days)</h6>
+      <canvas id="dailySalesChart" height="110"></canvas>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="admin-panel">
+      <h6>Payment Methods</h6>
+      <canvas id="paymentMethodChart" height="200"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="admin-panel">
+      <h6>Orders by Category</h6>
+      <canvas id="categoryChart" height="180"></canvas>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="admin-panel">
+      <h6>Popular Products</h6>
+      <ul class="list-unstyled" id="popularProductsList"></ul>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block extra_js %}
+<script>window.FH_ADMIN_PAGE = "dashboard";</script>
+{% endblock %}

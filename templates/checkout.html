@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Checkout - FoodHub{% endblock %}
+{% block content %}
+<section class="container py-5">
+  <h1 class="fh-section-title mb-4">Checkout</h1>
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <form id="checkoutForm" class="fh-checkout-form">
+        <h5 class="mb-3">Delivery Information</h5>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-control" name="name" value="{{ current_user.name if current_user else '' }}" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Phone</label>
+            <input type="text" class="form-control" name="phone" value="{{ current_user.phone if current_user else '' }}" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" value="{{ current_user.email if current_user else '' }}">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">City</label>
+            <input type="text" class="form-control" name="city" required>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Delivery Address</label>
+            <textarea class="form-control" name="address" rows="2" required></textarea>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Additional Instructions (optional)</label>
+            <textarea class="form-control" name="instructions" rows="2"></textarea>
+          </div>
+        </div>
+
+        <h5 class="mt-4 mb-3">Payment Method</h5>
+        <div class="fh-payment-options">
+          <label class="fh-payment-option">
+            <input type="radio" name="payment_method" value="cod" checked>
+            <i class="fa-solid fa-money-bill-wave"></i> Cash on Delivery
+          </label>
+          <label class="fh-payment-option">
+            <input type="radio" name="payment_method" value="card">
+            <i class="fa-solid fa-credit-card"></i> Card (Visa/Mastercard)
+          </label>
+          <label class="fh-payment-option">
+            <input type="radio" name="payment_method" value="jazzcash">
+            <i class="fa-solid fa-mobile-screen-button"></i> JazzCash
+          </label>
+          <label class="fh-payment-option">
+            <input type="radio" name="payment_method" value="easypaisa">
+            <i class="fa-solid fa-wallet"></i> Easypaisa
+          </label>
+        </div>
+
+        <div id="cardFields" class="row g-3 mt-2 d-none">
+          <div class="alert alert-warning small mb-2"><i class="fa-solid fa-shield-halved me-1"></i> Demo Payment Mode — no real card data is transmitted or stored. Enter any digits.</div>
+          <div class="col-md-8">
+            <label class="form-label">Card Number</label>
+            <input type="text" class="form-control" id="cardNumberInput" maxlength="19" placeholder="4242 4242 4242 4242">
+          </div>
+          <div class="col-md-2">
+            <label class="form-label">Expiry</label>
+            <input type="text" class="form-control" placeholder="MM/YY">
+          </div>
+          <div class="col-md-2">
+            <label class="form-label">CVV</label>
+            <input type="text" class="form-control" maxlength="4" placeholder="123">
+          </div>
+        </div>
+
+        <div id="mobileFields" class="row g-3 mt-2 d-none">
+          <div class="alert alert-warning small mb-2"><i class="fa-solid fa-shield-halved me-1"></i> Demo Payment Mode — simulated transaction only.</div>
+          <div class="col-md-6">
+            <label class="form-label">Mobile Account Number</label>
+            <input type="text" class="form-control" id="mobileNumberInput" placeholder="03xx-xxxxxxx">
+          </div>
+        </div>
+
+        <button type="submit" class="btn fh-btn-primary btn-lg w-100 mt-4" id="placeOrderBtn">
+          <i class="fa-solid fa-lock me-2"></i>Place Order
+        </button>
+      </form>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="fh-summary-card">
+        <h5 class="mb-3">Order Summary</h5>
+        <div id="checkoutItemsList" class="mb-3"></div>
+        <hr>
+        <div class="d-flex justify-content-between mb-2"><span>Subtotal</span><span id="coSubtotal">Rs. 0</span></div>
+        <div class="d-flex justify-content-between mb-2"><span>Discount</span><span id="coDiscount" class="text-success">- Rs. 0</span></div>
+        <div class="d-flex justify-content-between mb-2"><span>Delivery Fee</span><span id="coDelivery">Rs. 0</span></div>
+        <hr>
+        <div class="d-flex justify-content-between fw-bold fs-5"><span>Total</span><span id="coTotal">Rs. 0</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
+{% endblock %}

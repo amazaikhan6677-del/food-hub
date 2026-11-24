@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Track Order - FoodHub{% endblock %}
+{% block content %}
+<section class="container py-5">
+  <h1 class="fh-section-title mb-4">Track Your Order</h1>
+
+  <div class="fh-tracking-search mb-5">
+    <div class="input-group input-group-lg">
+      <input type="text" id="trackOrderInput" class="form-control" placeholder="Enter your Order ID (e.g. FH1A2B3C4D)" value="{{ order_number }}">
+      <button class="btn fh-btn-primary" id="trackBtn"><i class="fa-solid fa-magnifying-glass"></i> Track</button>
+    </div>
+  </div>
+
+  <div id="trackResult" class="d-none">
+    <div class="fh-tracking-card">
+      <div class="d-flex justify-content-between flex-wrap mb-3">
+        <div>
+          <h5 class="mb-1">Order <span id="trkOrderNumber"></span></h5>
+          <small class="text-muted">Placed on <span id="trkDate"></span></small>
+        </div>
+        <div class="text-end">
+          <span class="fh-status-badge" id="trkStatusBadge"></span>
+        </div>
+      </div>
+
+      <div class="fh-timeline" id="trkTimeline"></div>
+
+      <hr>
+      <div class="row">
+        <div class="col-md-6">
+          <h6>Ordered Items</h6>
+          <ul class="list-unstyled" id="trkItems"></ul>
+        </div>
+        <div class="col-md-6">
+          <h6>Order Info</h6>
+          <p class="mb-1">Total: <strong id="trkTotal"></strong></p>
+          <p class="mb-1">Payment: <strong id="trkPayment"></strong></p>
+          <p class="mb-1">Delivery to: <strong id="trkAddress"></strong></p>
+          <p class="mb-0">Estimated delivery: <strong id="trkEta">30-45 mins</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="trackNotFound" class="text-center text-muted py-5 d-none">
+    <i class="fa-solid fa-circle-exclamation fa-2x mb-3"></i>
+    <p>Invalid Order ID. Please double-check and try again.</p>
+  </div>
+</section>
+{% endblock %}
+{% block extra_js %}
+<script>window.FH_PAGE = "tracking"; window.FH_INITIAL_ORDER = "{{ order_number }}";</script>
+{% endblock %}

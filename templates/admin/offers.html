@@ -1,0 +1,40 @@
+{% extends "admin/base_admin.html" %}
+{% set active = "offers" %}
+{% block page_title %}Offers{% endblock %}
+{% block admin_content %}
+
+<div class="admin-panel mb-4">
+  <h6 class="mb-3">Create New Offer</h6>
+  <form id="addOfferForm">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label class="form-label">Title</label>
+        <input type="text" class="form-control" name="title" required>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Discount %</label>
+        <input type="number" class="form-control" name="discount_percent" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Description</label>
+        <input type="text" class="form-control" name="description">
+      </div>
+    </div>
+    <button type="submit" class="btn fh-btn-primary mt-3"><i class="fa-solid fa-plus me-1"></i>Create Offer</button>
+  </form>
+</div>
+
+<div class="admin-panel">
+  <h6 class="mb-3">All Offers</h6>
+  <div class="table-responsive">
+    <table class="table admin-table align-middle">
+      <thead><tr><th>Title</th><th>Description</th><th>Discount</th><th>Active</th><th>Actions</th></tr></thead>
+      <tbody id="offersTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
+{% block extra_js %}
+<script>window.FH_ADMIN_PAGE = "offers";</script>
+{% endblock %}

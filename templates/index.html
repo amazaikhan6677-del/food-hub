@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}FoodHub - Your Favorite Fast Food, Just One Chat Away{% endblock %}
+{% block content %}
+
+<!-- HERO -->
+<section class="fh-hero">
+  <div class="container py-5">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <span class="fh-badge">🔥 #1 Fast Food Delivery</span>
+        <h1 class="fh-hero-title mt-3">Your Favorite Fast Food, <span>Just One Chat Away!</span></h1>
+        <p class="fh-hero-sub">Order burgers, pizza, fries, drinks and more using our smart FoodBot.</p>
+        <div class="d-flex flex-wrap gap-3 mt-4">
+          <a href="{{ url_for('menu') }}" class="btn fh-btn-primary btn-lg"><i class="fa-solid fa-bag-shopping me-2"></i>Order Now</a>
+          <button class="btn fh-btn-outline-light btn-lg" id="heroChatBtn"><i class="fa-solid fa-robot me-2"></i>Chat with FoodBot</button>
+        </div>
+      </div>
+      <div class="col-lg-6 text-center">
+        <div class="fh-hero-art">🍔🍕🍟</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POPULAR FOODS -->
+<section class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fh-section-title">Popular Foods</h2>
+    <a href="{{ url_for('menu') }}" class="fh-link">View Full Menu <i class="fa-solid fa-arrow-right"></i></a>
+  </div>
+  <div class="row g-4">
+    {% for item in popular %}
+    <div class="col-6 col-md-4 col-lg-3">
+      <div class="fh-food-card">
+        <div class="fh-food-img"><img src="{{ item.image_url }}" alt="{{ item.name }}" loading="lazy"></div>
+        <div class="fh-food-body">
+          <h6>{{ item.name }}</h6>
+          <p class="fh-food-desc">{{ item.description[:60] }}{% if item.description|length > 60 %}…{% endif %}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="fh-price">Rs. {{ '%.0f'|format(item.price) }}</span>
+            <span class="fh-rating"><i class="fa-solid fa-star"></i> {{ item.rating }}</span>
+          </div>
+          <button class="btn fh-btn-primary w-100 mt-2 btn-sm add-to-cart-btn" data-id="{{ item.id }}">
+            <i class="fa-solid fa-cart-plus me-1"></i>Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- OFFERS / DEALS -->
+<section class="fh-deals-section py-5" id="offers">
+  <div class="container">
+    <h2 class="fh-section-title text-center mb-2">Today's Deals</h2>
+    <p class="text-center text-muted mb-4">Special offers you don't want to miss</p>
+    <div class="row g-4 mb-5">
+      {% for offer in offers %}
+      <div class="col-md-4">
+        <div class="fh-offer-card">
+          <i class="fa-solid fa-tag fh-offer-icon"></i>
+          <h5>{{ offer.title }}</h5>
+          <p>{{ offer.description }}</p>
+          <span class="fh-offer-percent">{{ offer.discount_percent|int }}% OFF</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="row g-4">
+      {% for item in deals %}
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="fh-food-card fh-deal-card">
+          <span class="fh-deal-tag">DEAL</span>
+          <div class="fh-food-img"><img src="{{ item.image_url }}" alt="{{ item.name }}" loading="lazy"></div>
+          <div class="fh-food-body">
+            <h6>{{ item.name }}</h6>
+            <span class="fh-price">Rs. {{ '%.0f'|format(item.price) }}</span>
+            <button class="btn fh-btn-primary w-100 mt-2 btn-sm add-to-cart-btn" data-id="{{ item.id }}">Add</button>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- HOW FOODBOT WORKS -->
+<section class="container py-5">
+  <h2 class="fh-section-title text-center mb-5">Order in 3 Easy Steps</h2>
+  <div class="row g-4 text-center">
+    <div class="col-md-4">
+      <div class="fh-step"><i class="fa-solid fa-comments"></i><h5>1. Chat with FoodBot</h5><p>Tell FoodBot what you're craving, or browse the menu yourself.</p></div>
+    </div>
+    <div class="col-md-4">
+      <div class="fh-step"><i class="fa-solid fa-cart-shopping"></i><h5>2. Review Your Cart</h5><p>Confirm your items, quantities and total before checkout.</p></div>
+    </div>
+    <div class="col-md-4">
+      <div class="fh-step"><i class="fa-solid fa-truck-fast"></i><h5>3. Track & Enjoy</h5><p>Pay your way and track your order live until it's at your door.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="fh-reviews-section py-5">
+  <div class="container">
+    <h2 class="fh-section-title text-center mb-4">What Our Customers Say</h2>
+    <div class="row g-4">
+      {% for r in reviews %}
+      <div class="col-md-4">
+        <div class="fh-review-card">
+          <div class="fh-stars">
+            {% for i in range(r.rating) %}<i class="fa-solid fa-star"></i>{% endfor %}
+          </div>
+          <p>"{{ r.comment }}"</p>
+          <h6 class="mb-0">— {{ r.customer_name }}</h6>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+{% block extra_js %}
+<script>
+document.getElementById('heroChatBtn').addEventListener('click', () => {
+  document.getElementById('foodbot-toggle').click();
+});
+</script>
+{% endblock %}

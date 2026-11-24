@@ -1,0 +1,24 @@
+{% extends "admin/base_admin.html" %}
+{% set active = "customers" %}
+{% block page_title %}Customers{% endblock %}
+{% block admin_content %}
+
+<div class="admin-panel">
+  <div class="d-flex justify-content-between flex-wrap gap-2 mb-3">
+    <h6 class="mb-0">All Customers</h6>
+    <input type="text" id="customerSearch" class="form-control form-control-sm" style="width:250px" placeholder="Search by name or email...">
+  </div>
+  <div class="table-responsive">
+    <table class="table admin-table align-middle">
+      <thead>
+        <tr><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th><th>Status</th><th>Action</th></tr>
+      </thead>
+      <tbody id="customersTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
+{% block extra_js %}
+<script>window.FH_ADMIN_PAGE = "customers";</script>
+{% endblock %}

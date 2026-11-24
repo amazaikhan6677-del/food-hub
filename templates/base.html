@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}FoodHub - Fast Food Ordering{% endblock %}</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+{% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top fh-navbar">
+  <div class="container">
+    <a class="navbar-brand fh-brand" href="{{ url_for('index') }}">
+      <i class="fa-solid fa-burger"></i> Food<span>Hub</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('menu') }}">Menu</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}#offers">Offers</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}#about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}#contact">Contact</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('tracking_page') }}">Track Order</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_root') }}"><i class="fa-solid fa-user-shield me-1"></i>Admin Panel</a></li>
+      </ul>
+      <ul class="navbar-nav align-items-lg-center gap-lg-2">
+        {% if current_user %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+            <i class="fa-solid fa-user-circle"></i> {{ current_user.name.split(' ')[0] }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="{{ url_for('orders_page') }}">My Orders</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
+          </ul>
+        </li>
+        {% else %}
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+        <li class="nav-item"><a class="btn btn-sm fh-btn-outline" href="{{ url_for('register') }}">Register</a></li>
+        {% endif %}
+        <li class="nav-item">
+          <a class="btn fh-btn-cart position-relative" href="{{ url_for('cart_page') }}">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="badge rounded-pill fh-cart-badge" id="navCartCount">{{ cart_count }}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- FLASH MESSAGES -->
+<div class="container mt-3">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ 'danger' if category=='danger' else category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>
+
+{% block content %}{% endblock %}
+
+<!-- FOOTER -->
+<footer class="fh-footer mt-5" id="contact">
+  <div class="container py-5">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <h4 class="fh-brand mb-3"><i class="fa-solid fa-burger"></i> Food<span>Hub</span></h4>
+        <p class="text-light-50">Your favorite fast food, just one chat away. Burgers, pizza, fries, drinks and more — delivered fast.</p>
+        <div class="d-flex gap-3 fs-5">
+          <a href="#" class="text-light"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" class="text-light"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="text-light"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" class="text-light"><i class="fa-brands fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <h6 class="text-uppercase fw-bold mb-3">Company</h6>
+        <ul class="list-unstyled fh-footer-links" id="about">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h6 class="text-uppercase fw-bold mb-3">Help</h6>
+        <ul class="list-unstyled fh-footer-links">
+          <li><a href="{{ url_for('tracking_page') }}">Track Order</a></li>
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Refund Policy</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h6 class="text-uppercase fw-bold mb-3">Contact</h6>
+        <ul class="list-unstyled fh-footer-links">
+          <li><i class="fa-solid fa-phone me-2"></i> +92 300 1234567</li>
+          <li><i class="fa-solid fa-envelope me-2"></i> support@foodhub.demo</li>
+          <li><i class="fa-solid fa-location-dot me-2"></i> Lahore, Pakistan</li>
+        </ul>
+      </div>
+    </div>
+    <hr class="border-light-50">
+    <p class="text-center mb-0 small">&copy; 2026 FoodHub. All rights reserved. Demo project for educational purposes.</p>
+  </div>
+</footer>
+
+<!-- FOODBOT CHATBOT WIDGET -->
+<div id="foodbot-widget">
+  <button id="foodbot-toggle" class="foodbot-fab" title="Chat with FoodBot">
+    <i class="fa-solid fa-robot"></i>
+  </button>
+  <div id="foodbot-panel" class="foodbot-panel d-none">
+    <div class="foodbot-header">
+      <div><i class="fa-solid fa-robot"></i> <strong>FoodBot</strong> <span class="online-dot"></span></div>
+      <button id="foodbot-close" class="btn-close btn-close-white"></button>
+    </div>
+    <div id="foodbot-messages" class="foodbot-messages"></div>
+    <div class="foodbot-quick-replies" id="foodbotQuickReplies">
+      <button class="qr-btn" data-msg="show menu">Show menu</button>
+      <button class="qr-btn" data-msg="show deals">Deals</button>
+      <button class="qr-btn" data-msg="show cart">My cart</button>
+      <button class="qr-btn" data-msg="place order">Place order</button>
+    </div>
+    <form id="foodbot-form" class="foodbot-input-row">
+      <input type="text" id="foodbot-input" placeholder="Type a message..." autocomplete="off">
+      <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+    </form>
+  </div>
+</div>
+
+<div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>
